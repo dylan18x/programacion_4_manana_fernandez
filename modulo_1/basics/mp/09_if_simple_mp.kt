@@ -1,13 +1,15 @@
 fun main() {
     println("Controles de Flujo")
     println("Condicional If")
-    println("Incluir Temperatura en grados centigrados: ")
-    val temperatura = readLine()?.toDoubleOrNull()?: 36.5
-    if(temperatura>=38.0){
-        println("Fiebre detectada: derivar consulta prioritaria")
+    println("Ingrese la cantidad de libros disponibles: ")
+    val cantidadLibros = readLine()?.toDoubleOrNull() ?: 10.0
+
+    if(cantidadLibros <= 5.0){
+        println("Pocos libros disponibles: realizar reposición")
     }
-    if(temperatura>=40.0){
-        println("Fiebre alta: atencion de emergencia inmediata")
+    if(cantidadLibros == 0.0){
+        println("Sin libros disponibles: préstamo no permitido")
     }
-    println("Temperatura registrada: $temperatura grados centigrados")
+
+    println("Cantidad registrada: $cantidadLibros libros")
 }

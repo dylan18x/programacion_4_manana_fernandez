@@ -1,9 +1,9 @@
 fun main() {
-    val numero1 = 1
+    val numero1 = 5
     val numero2 = 2
-    println("Suma")
+    println("Cantidad de libros")
     println("$numero1 + $numero2 : ${numero1 + numero2}")
-    println("Resta")
+    println("Libros prestados")
     println("$numero1 - $numero2 : ${numero1 - numero2}")
     println("Multiplicacion")
     println("$numero1 * $numero2 : ${numero1 * numero2}")
@@ -29,6 +29,4 @@ fun main() {
     println("x++ $x")
     x--
     println("x-- $x")
-    
-    
 }

@@ -1,6 +1,6 @@
 fun main() {
-   	val nombre="Peter"
-    val apellido="Parker"
+    val nombre="Cien Años"
+    val apellido="de Soledad"
     val edad=28
     // variable simple
     

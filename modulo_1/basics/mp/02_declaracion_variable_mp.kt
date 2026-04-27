@@ -1,15 +1,15 @@
 fun main() {
     //No mutable
-	val nombre="Ana"
-    val edad: Int = 28
-    val pi= 3.14169
+	val libro="Don Quijote de la Mancha"
+    val copias: Int =11
+    val pi= 15.45
 	
     //Mutable
-    var contador = 0
-    contador = contador + 1
-    println(contador)
-    contador = contador - 1
-    println(contador)
+    var contadorCopias = 0
+    contadorCopias = contadorCopias + 1
+    println(contadorCopias)
+    contadorCopias = contadorCopias - 1
+    println(contadorCopias)
     
-    println("$nombre tiene $edad años")
+    println("El libro $libro tiene $copias copias")
 }

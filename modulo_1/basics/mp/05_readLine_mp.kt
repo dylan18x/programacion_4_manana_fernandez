@@ -1,12 +1,12 @@
 fun main() {
     //ReadLine
-    println("Escribe tu nombre: ")
+    println("Escribe el nombre del libro: ")
     val nombre = readLine()
-    println("Nombre incluido: $nombre")
+    println("Libro ingresado: $nombre")
       
-    println("Escribe tu apellido: ")
-    val apellido = readLine() ?: "anónimo"
-    println("Apellido incluido: $apellido")
+    println("Escribe el autor del libro: ")
+    val apellido = readLine() ?: "desconocido"
+    println("Autor ingresado: $apellido")
     
     /*
     Comentarios multilinea
@@ -15,9 +15,9 @@ fun main() {
     //Comentarios de una sola linea
     
     /**
-    *Multicines
+    *Biblioteca
     *Comentarios
-    *@Param nombre del usuario
-    *@return un saludo personalizado
+    *@Param nombre del libro
+    *@return información del libro
     */
 }

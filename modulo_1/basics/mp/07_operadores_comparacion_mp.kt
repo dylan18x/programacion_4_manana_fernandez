@@ -1,13 +1,12 @@
 fun main() {
     println("Operadores de Comparacion")
-    val num1 = 15
-    val num2 = 10
-    println("$num1 == $num2 = ${num1==num2}")
-    println("$num1 .equals $num2 = ${num1.equals(num2)}")
-    println("$num1 != $num2 = ${num1!=num2}")
-    println("$num1 > $num2 = ${num1>num2}")
-    println("$num1 >= $num2 = ${num1>=num2}")
-    println("$num1 < $num2 = ${num1<num2}")
-    println("$num1 <= $num2 = ${num1<=num2}")
-
+    val librosDisponibles = 15
+    val librosPrestados = 10
+    println("$librosDisponibles == $librosPrestados = ${librosDisponibles==librosPrestados}")
+    println("$librosDisponibles .equals $librosPrestados = ${librosDisponibles.equals(librosPrestados)}")
+    println("$librosDisponibles != $librosPrestados = ${librosDisponibles!=librosPrestados}")
+    println("$librosDisponibles > $librosPrestados = ${librosDisponibles>librosPrestados}")
+    println("$librosDisponibles >= $librosPrestados = ${librosDisponibles>=librosPrestados}")
+    println("$librosDisponibles < $librosPrestados = ${librosDisponibles<librosPrestados}")
+    println("$librosDisponibles <= $librosPrestados = ${librosDisponibles<=librosPrestados}")
 }

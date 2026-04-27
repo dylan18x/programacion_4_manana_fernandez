@@ -1,21 +1,21 @@
 fun main() {
     println("Operadores Logicos")
-    val esMayor = true
-    val tienePermiso = false
-    val estaActivo = true
+    val libroDisponible = true
+    val tieneMulta = false
+    val usuarioActivo = true
 
     println("&& - And Logico")
-    println("$esMayor && $tienePermiso = ${esMayor && tienePermiso}")
-    println("$esMayor && $estaActivo = ${esMayor && estaActivo}")
+    println("$libroDisponible && $tieneMulta = ${libroDisponible && tieneMulta}")
+    println("$libroDisponible && $usuarioActivo = ${libroDisponible && usuarioActivo}")
 
     println("----------------------")
     println("|| - Or Logico")
-    println("$esMayor || $tienePermiso = ${esMayor || tienePermiso}")
-    println("$esMayor || $estaActivo = ${esMayor || estaActivo}")
+    println("$libroDisponible || $tieneMulta = ${libroDisponible || tieneMulta}")
+    println("$libroDisponible || $usuarioActivo = ${libroDisponible || usuarioActivo}")
 
     println("----------------------")
     println("! - Not")
-    println("! $esMayor = ${!esMayor}")
-    println("! $estaActivo = ${!estaActivo}")
+    println("! $libroDisponible = ${!libroDisponible}")
+    println("! $usuarioActivo = ${!usuarioActivo}")
 
 }

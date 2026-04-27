@@ -1,33 +1,37 @@
 fun main() {
     //Tipos de Datos
     //Numeros Enteros
-    val numero1: Byte=127
-    println("Numero Byte $numero1")
-    val numero2: Short=32_765
-    println("Numero Short $numero2")
-    val numero3: Int=12
-    println("Numero Int $numero3")
-    val numero4: Long=2_122_122_122_123_123_987L
-    println("Numero Long $numero4")
+    val sucursales: Byte=3
+    println("Sucursales: $sucursales")
+    val cantidad: Short=32
+    println("Cantidad del libro $cantidad")
+    val libro_id: Int=12
+    println(" El id del libro es: $libro_id")
+    val ISB: Long=9780306406157L
+    println("ISB del libro: $ISB")
     
     println("Numeros Decimales")
-    val numero5: Float= 3.14f
-    println("Numero Float $numero5")
-    val numero6: Double= 3.1444738748
-    println("Numero Double $numero6")
+    val precioLibro: Float= 16.89f
+    println("Precio del libro: $precioLibro")
+    val multaPorDia: Double= 0.50
+    println("Multa por dia: $multaPorDia")
     
     //Inferido
     val nombre="Juana"
     val edad=56
     
-    println("Nombre $nombre")
-    val nombreTipo=nombre::class.simpleName
-    println("Tipo Inferido nombre: $nombreTipo")
-    println("Tipo Inferido nombre: ${nombre::class.simpleName}")
-    println("Edad: $edad")
-    val edadTipo=edad::class.simpleName
-    println("Tipo Inferido edad: $edadTipo")
-    println("Tipo Inferido edad: ${edad::class.simpleName}")
-    
-    
+    //Inferido
+    val nombreLibro = "Cien Años de Soledad"
+    val cantidadPaginas = 350
+
+    println("Nombre del libro: $nombreLibro")
+    val nombreTipo = nombreLibro::class.simpleName
+    println("Tipo Inferido nombreLibro: $nombreTipo")
+    println("Tipo Inferido nombreLibro: ${nombreLibro::class.simpleName}")
+
+    println("Cantidad de páginas: $cantidadPaginas")
+    val paginasTipo = cantidadPaginas::class.simpleName
+    println("Tipo Inferido cantidadPaginas: $paginasTipo")
+    println("Tipo Inferido cantidadPaginas: ${cantidadPaginas::class.simpleName}")
+        
 }

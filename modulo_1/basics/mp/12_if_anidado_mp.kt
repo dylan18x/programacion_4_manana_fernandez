@@ -1,26 +1,26 @@
 fun main() {
     println("Controles de Flujo")
     println("Condicional If-Multiples condiciones")
-    println("Tienes antecedentes cardiacos?")
-    val tieneAntecedentes = readLine()?.trim()?.lowercase()=="s"
-    println("Frecuencia Cardiaca (lpm)")
-    val frecuencia = readLine()?.toIntOrNull()?:0
+    println("¿Tiene multas pendientes? (s/n)")
+    val tieneMultas = readLine()?.trim()?.lowercase() == "s"
+    println("Cantidad de libros prestados")
+    val cantidadLibros = readLine()?.toIntOrNull() ?: 0
     
-    if(tieneAntecedentes){
-        print("Paciente con antecedentes cardiacos ")
-        if(frecuencia<50){
-            println("Bradicardia severa")
-        } else if(frecuencia>100){
-            println("Taquicardia")
+    if(tieneMultas){
+        print("Usuario con multas pendientes ")
+        if(cantidadLibros > 5){
+            println("Límite de préstamo excedido")
+        } else if(cantidadLibros == 0){
+            println("Sin libros prestados")
         } else{
-            println("Freciencia Normal")
+            println("Préstamo controlado")
         }
     } else{
-        print("Paciente sin antecedentes cardiacos ")
-        if(frecuencia<50 || frecuencia > 100){
-            println("Frecuencia fuera del rango normal")
+        print("Usuario sin multas pendientes ")
+        if(cantidadLibros > 5 || cantidadLibros == 0){
+            println("Cantidad fuera del rango normal")
         } else{
-            println("Freciencia Cardiaca Normal")
+            println("Cantidad de préstamo normal")
         }
     }
 }

@@ -1,21 +1,22 @@
 fun main() {
     println("Controles de Flujo")
     println("Condicional If-Multiples condiciones")
-    println("Presion sistolica mmHg: ")
-    val sistolica = readLine()?.toIntOrNull()?:0
+    println("Cantidad de libros disponibles: ")
+    val cantidadLibros = readLine()?.toIntOrNull() ?: 0
     
-    val clasificacion = if(sistolica<=90){
-        "Hipotension"
-    } else if(sistolica<=119){
-        "Normal"
-    } else if(sistolica<=129){
-        "Elevada"
-    } else if(sistolica<=139){
-        "Hipertension Grado 1"
-    } else if(sistolica<=179){
-        "Hipertension Grado 2"
+    val clasificacion = if(cantidadLibros <= 5){
+        "Stock Bajo"
+    } else if(cantidadLibros <= 20){
+        "Stock Normal"
+    } else if(cantidadLibros <= 50){
+        "Stock Bueno"
+    } else if(cantidadLibros <= 100){
+        "Stock Alto"
+    } else if(cantidadLibros <= 200){
+        "Stock Muy Alto"
     } else{
-        "Crisis Hipertensiva"
+        "Exceso de Inventario"
     }
+
     println("Clasificacion: $clasificacion")
 }
