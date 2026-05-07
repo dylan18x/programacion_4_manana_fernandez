@@ -1,0 +1,99 @@
+# =========================
+# GENERAL
+# =========================
+node_modules/
+*.log
+*.tmp
+*.temp
+*.swp
+.DS_Store
+Thumbs.db
+.env
+.env.*
+
+# =========================
+# REACT / REACT NATIVE (JS)
+# =========================
+# Dependencies
+node_modules/
+
+# Build
+build/
+dist/
+.next/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Metro / Expo
+.expo/
+.expo-shared/
+.expo/web-build/
+
+# React Native
+android/
+ios/
+
+# =========================
+# ANDROID (KOTLIN / RN)
+# =========================
+.gradle/
+local.properties
+*.iml
+.idea/
+*.keystore
+*.jks
+
+# Build folders
+/build/
+/app/build/
+
+# =========================
+# FLUTTER
+# =========================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Generated files
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# iOS (Flutter)
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# Android (Flutter)
+android/.gradle/
+android/local.properties
+android/app/build/
+
+# =========================
+# VSCODE / IDEs
+# =========================
+.vscode/
+.idea/
+*.code-workspace
+
+# =========================
+# ARCHIVOS SENSIBLES
+# =========================
+*.key
+*.pem
+*.p12
+*.crt
+
+# =========================
+# OTROS
+# =========================
+coverage/
+*.coverage
