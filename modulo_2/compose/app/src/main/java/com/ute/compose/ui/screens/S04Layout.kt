@@ -1,108 +1,115 @@
 package com.tuapp.compose.screens
-
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ute.compose.ui.screens.EtiquetaSeccion
 
 @Composable
-fun S03ButtonScreen() {
-    // Estado para mostrar cuál botón fue presionado
-    var ultimoClick by remember { mutableStateOf("(ninguno)") }
-
+fun S04LayoutScreen() {
     Column(
-        modifier            = Modifier.fillMaxSize().padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),  // scroll para ver todo el contenido
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Text("Sección 3 · Variantes de Button",
+        Text("Sección 4 · Column · Row · Box",
             style = MaterialTheme.typography.titleMedium)
         HorizontalDivider()
 
-        // Panel de feedback — muestra el último click
-        Surface(
-            color    = MaterialTheme.colorScheme.surfaceVariant,
-            modifier = Modifier.fillMaxWidth()
+        // ── COLUMN ─────────────────────────────────────────────────────────
+        EtiquetaSeccion("Column — apila verticalmente")
+        Column(
+            modifier            = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFE3F2FD))
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text     = "Último click: $ultimoClick",
-                modifier = Modifier.padding(12.dp),
-                style    = MaterialTheme.typography.bodyMedium
-            )
+            CeldaLayout("Elemento 1", Color(0xFF90CAF9))
+            CeldaLayout("Elemento 2", Color(0xFF64B5F6))
+            CeldaLayout("Elemento 3", Color(0xFF42A5F5))
         }
 
-        Spacer(Modifier.height(4.dp))
-
-        Button(
-            onClick  = { ultimoClick = "Button (Primary)" },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("Button — Primary") }
-
-        // Button con ícono dentro del slot de contenido
-        Button(
-            onClick  = { ultimoClick = "Button con ícono" },
-            modifier = Modifier.fillMaxWidth()
+        // ── ROW con Arrangement ────────────────────────────────────────────
+        EtiquetaSeccion("Row — SpaceBetween")
+        Row(
+            modifier              = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFF3E5F5))
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment     = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector        = Icons.Default.Add,
-                contentDescription = null,
-                modifier           = Modifier.size(18.dp)
-            )
-            Spacer(Modifier.width(8.dp))
-            Text("Button con ícono")
+            Text("Izquierda")
+            Text("Centro")
+            Text("Derecha")
         }
 
-        OutlinedButton(
-            onClick  = { ultimoClick = "OutlinedButton" },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("OutlinedButton") }
+        EtiquetaSeccion("Row — SpaceEvenly")
+        Row(
+            modifier              = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFE8F5E9))
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text("A"); Text("B"); Text("C"); Text("D")
+        }
 
-        TextButton(
-            onClick  = { ultimoClick = "TextButton" },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("TextButton") }
+        // ── ROW con weight ─────────────────────────────────────────────────
+        EtiquetaSeccion("Row + weight (distribución proporcional 1:2:1)")
+        Row(Modifier.fillMaxWidth().height(50.dp)) {
+            Box(Modifier.weight(1f).fillMaxHeight().background(Color(0xFFEF9A9A)),
+                contentAlignment = Alignment.Center) { Text("1") }
+            Box(Modifier.weight(2f).fillMaxHeight().background(Color(0xFFE57373)),
+                contentAlignment = Alignment.Center) { Text("2") }
+            Box(Modifier.weight(1f).fillMaxHeight().background(Color(0xFFEF5350)),
+                contentAlignment = Alignment.Center) { Text("1") }
+        }
 
-        ElevatedButton(
-            onClick  = { ultimoClick = "ElevatedButton" },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("ElevatedButton") }
-
-        FilledTonalButton(
-            onClick  = { ultimoClick = "FilledTonalButton" },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("FilledTonalButton") }
-
-        // enabled = false → el botón no dispara onClick, apariencia atenuada
-        Button(
-            onClick  = { },
-            enabled  = false,
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("Deshabilitado (enabled = false)") }
-
-        HorizontalDivider()
-
-        // IconButton — solo ícono, sin texto
-        EtiquetaSeccion("IconButton")
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = { ultimoClick = "IconButton Add" }) {
-                Icon(Icons.Default.Add, contentDescription = "Agregar")
-            }
-            IconButton(onClick = { ultimoClick = "IconButton Delete" }) {
-                Icon(Icons.Default.Delete, contentDescription = "Eliminar",
-                    tint = MaterialTheme.colorScheme.error)
-            }
+        // ── BOX ────────────────────────────────────────────────────────────
+        EtiquetaSeccion("Box — superpone capas con align por capa")
+        Box(
+            modifier         = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .background(Color(0xFF1565C0)),
+            contentAlignment = Alignment.Center   // alineación por defecto
+        ) {
+            // Capa 1: esquina superior izquierda
+            Box(Modifier.size(40.dp).background(Color(0xFF42A5F5))
+                .align(Alignment.TopStart))
+            // Capa 2: esquina inferior derecha
+            Box(Modifier.size(40.dp).background(Color(0xFF1976D2))
+                .align(Alignment.BottomEnd))
+            // Capa 3: centrada (por defecto del Box padre)
+            Text("Texto encima de todo",
+                color = Color.White,
+                style = MaterialTheme.typography.labelLarge)
         }
     }
 }
 
+@Composable
+private fun CeldaLayout(label: String, color: Color) {
+    Box(
+        modifier         = Modifier.fillMaxWidth().height(36.dp).background(color),
+        contentAlignment = Alignment.Center
+    ) { Text(label, style = MaterialTheme.typography.labelMedium) }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun S03_Preview() {
-    MaterialTheme { S03_ButtonScreen() }
+fun S04_Preview() {
+    MaterialTheme { S04LayoutScreen() }
 }

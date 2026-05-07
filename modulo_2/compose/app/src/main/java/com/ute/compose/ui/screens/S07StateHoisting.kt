@@ -1,8 +1,7 @@
 package com.tuapp.compose.screens
 
-import com.ute.compose.ui.screens.EtiquetaSeccion
-
-
+// ui/S07_StateHoisting.kt
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -10,116 +9,151 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ute.compose.ui.screens.EtiquetaSeccion
 
 @Composable
-fun S06EstadoScreen() {
+fun S07StateHoistingScreen() {
     Column(
         modifier            = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Text("Sección 6 · Estado y recomposición",
+        Text("Sección 7 · State Hoisting",
             style = MaterialTheme.typography.titleMedium)
         HorizontalDivider()
 
-        DemoContadorS6()
+        DemoEstadoAtrapado()
         HorizontalDivider()
-        DemoEstadoDerivado()
+        DemoEstadoElevado()
     }
 }
 
-// ── Demo 1: Contador clásico ─────────────────────────────────────────────────
+// ── ❌ Anti-patrón: estado atrapado dentro del componente ────────────────────
 @Composable
-private fun DemoContadorS6() {
-    var cuenta by remember { mutableStateOf(0) }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        EtiquetaSeccion("Contador — remember + mutableStateOf")
-
-        // Solo este Text se recompone cuando 'cuenta' cambia
-        Text(
-            text       = "$cuenta",
-            style      = MaterialTheme.typography.displayMedium,
-            fontWeight = FontWeight.Bold
-        )
-
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = { cuenta-- }) { Text("−") }
-            Button(onClick = { cuenta++ }) { Text("+") }
-            OutlinedButton(onClick = { cuenta = 0 }) { Text("Reset") }
-        }
+private fun DemoEstadoAtrapado() {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        EtiquetaSeccion("❌ Estado atrapado — el padre no puede leerlo")
 
         Text(
-            "Solo el número se recompone al hacer click",
+            "El estado vive dentro del botón. El padre no sabe cuántas veces " +
+                    "fue presionado ni puede usarlo para nada.",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
+        // El estado está atrapado — nadie más puede acceder a él
+        BotonAtrapado()
+
+        // El padre intenta mostrar el conteo pero no puede
+        Text(
+            "El padre no puede mostrar el conteo aquí ❌",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.error
+        )
     }
 }
 
-// ── Demo 2: Estado derivado — calculado del estado principal ─────────────────
-// El estado derivado NO necesita su propio mutableStateOf
-// Se recalcula automáticamente en cada recomposición
 @Composable
-private fun DemoEstadoDerivado() {
-    var nivel by remember { mutableStateOf(0) }
-    val max   = 5
-
-    // Estado derivado: calculado del estado 'nivel'
-    // No usa remember ni mutableStateOf propio
-    val porcentaje = nivel.toFloat() / max
-    val etiquetaNivel = when {
-        nivel == 0    -> "Sin nivel"
-        nivel <= 2    -> "Principiante"
-        nivel <= 4    -> "Intermedio"
-        else          -> "Avanzado"
+private fun BotonAtrapado() {
+    // 'cuenta' está encerrado aquí — el padre no tiene acceso
+    var cuenta by remember { mutableStateOf(0) }
+    Button(onClick = { cuenta++ }) {
+        Text("Presionado $cuenta veces (estado atrapado)")
     }
+}
+
+// ── ✅ Patrón correcto: estado elevado al padre ──────────────────────────────
+@Composable
+private fun DemoEstadoElevado() {
+    // El estado vive aquí — el padre puede usarlo para múltiples propósitos
+    var seleccion by remember { mutableStateOf<String?>(null) }
+    var historial by remember { mutableStateOf(listOf<String>()) }
+
+    val opciones = listOf("🔴 Rojo", "🟢 Verde", "🔵 Azul", "🟡 Amarillo")
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        EtiquetaSeccion("Estado derivado — calculado del estado principal")
+        EtiquetaSeccion("✅ Estado elevado — el padre coordina todo")
 
         Text(
-            "$etiquetaNivel (nivel $nivel/$max)",
-            style      = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
-
-        LinearProgressIndicator(
-            progress = { porcentaje },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(12.dp)
-                .clip(RoundedCornerShape(6.dp))
-        )
-
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedButton(
-                onClick  = { if (nivel > 0) nivel-- },
-                enabled  = nivel > 0
-            ) { Text("Bajar nivel") }
-
-            Button( 
-                onClick  = { if (nivel < max) nivel++ },
-                enabled  = nivel < max
-            ) { Text("Subir nivel") }
-        }
-
-        Text(
-            "porcentaje = ${"%.0f".format(porcentaje * 100)}% " +
-                    "— derivado de nivel, sin estado propio",
+            "El hijo solo notifica qué fue seleccionado. " +
+                    "El padre actualiza la selección Y el historial.",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
+        // El padre pasa el valor actual y un callback
+        // El hijo es "tonto" — no decide qué hacer con el click
+        SelectorOpciones(
+            opciones   = opciones,
+            seleccion  = seleccion,
+            onSeleccion = { opcion ->
+                // El padre decide qué hacer con el evento:
+                seleccion = opcion
+                historial = (historial + opcion).takeLast(4)  // máximo 4 entradas
+            }
+        )
+
+        // El padre usa el mismo estado para dos cosas distintas
+        seleccion?.let { sel ->
+            val color = when {
+                "Rojo"     in sel -> Color(0xFFFFCDD2)
+                "Verde"    in sel -> Color(0xFFC8E6C9)
+                "Azul"     in sel -> Color(0xFFBBDEFB)
+                "Amarillo" in sel -> Color(0xFFFFF9C4)
+                else              -> Color.Transparent
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(color),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Seleccionado: $sel",
+                    style = MaterialTheme.typography.labelLarge)
+            }
+        }
+
+        if (historial.isNotEmpty()) {
+            Text(
+                "Historial: ${historial.joinToString(" → ")}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+// Composable stateless — recibe todo por parámetros, no tiene estado propio
+// Fácil de testear: solo necesitas pasarle datos y lambdas
+@Composable
+private fun SelectorOpciones(
+    opciones:    List<String>,
+    seleccion:   String?,
+    onSeleccion: (String) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        opciones.forEach { opcion ->
+            val estaSeleccionado = seleccion == opcion
+            Button(
+                onClick  = { onSeleccion(opcion) },
+                modifier = Modifier.fillMaxWidth(),
+                colors   = if (estaSeleccionado)
+                    ButtonDefaults.buttonColors()
+                else
+                    ButtonDefaults.outlinedButtonColors()
+            ) {
+                Text(opcion)
+            }
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun S06_Preview() {
-    MaterialTheme { S06EstadoScreen() }
+fun S07_Preview() {
+    MaterialTheme { S07StateHoistingScreen() }
 }
