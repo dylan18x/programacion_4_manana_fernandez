@@ -1,5 +1,5 @@
 // presentation/ui/uipublic/home/HomeScreen.kt
-package com.shopapp.presentation.ui.public.home
+package com.shopapp.presentation.ui.uipublic.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
