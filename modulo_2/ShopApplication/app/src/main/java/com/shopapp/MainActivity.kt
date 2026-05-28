@@ -13,10 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.*
 import com.shopapp.presentation.components.LoadingScreen
-import com.shopapp.presentation.navigation.Screen
 import com.shopapp.presentation.ui.auth.LoginScreen
 import com.shopapp.presentation.ui.auth.RegisterScreen
-import com.shopapp.presentation.viewmodel.AuthViewModel
+import com.shopapp.presentation.viewmodel.`AuthViewModel.kt`
 import com.shopapp.theme.ShopAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ShopApp() {
-    val authViewModel: AuthViewModel = hiltViewModel()
+    val authViewModel: `AuthViewModel.kt` = hiltViewModel()
 
     val isCheckingSession by authViewModel.isCheckingSession.collectAsState()
     val isAuthenticated   by authViewModel.isAuthenticated.collectAsState()

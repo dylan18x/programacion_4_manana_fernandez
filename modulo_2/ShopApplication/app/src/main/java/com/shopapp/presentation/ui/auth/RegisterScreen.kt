@@ -16,14 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.shopapp.presentation.components.*
-import com.shopapp.presentation.viewmodel.AuthViewModel
+import com.shopapp.presentation.viewmodel.`AuthViewModel.kt`
 import com.shopapp.theme.*
 
 @Composable
 fun RegisterScreen(
     onRegisterSuccess:  (isStaff: Boolean) -> Unit,
     onNavigateToLogin:  () -> Unit,
-    viewModel: AuthViewModel = hiltViewModel(),
+    viewModel: `AuthViewModel.kt` = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
