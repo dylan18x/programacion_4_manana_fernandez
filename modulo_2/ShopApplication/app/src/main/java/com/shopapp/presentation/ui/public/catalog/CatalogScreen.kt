@@ -1,5 +1,5 @@
 // presentation/ui/uipublic/catalog/CatalogScreen.kt
-package com.shopapp.presentation.ui.uipublic.catalog
+package com.shopapp.presentation.ui.public.catalog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.shopapp.presentation.ui.uipublic.home.ProductCard
+import com.shopapp.presentation.ui.public.home.ProductCard
 import com.shopapp.presentation.viewmodel.CatalogViewModel
 import com.shopapp.theme.*
 
