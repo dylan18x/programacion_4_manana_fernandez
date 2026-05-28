@@ -1,8 +1,9 @@
+// di/RepositoryModule.kt
 package com.shopapp.di
 
-// di/RepositoryModule.kt
-
+import com.shopapp.data.repository.AuthRepositoryImpl
 import com.shopapp.data.repository.CategoryRepositoryImpl
+import com.shopapp.domain.repository.AuthRepository
 import com.shopapp.domain.repository.CategoryRepository
 import dagger.Binds
 import dagger.Module
@@ -15,9 +16,8 @@ import javax.inject.Singleton
 abstract class RepositoryModule {
 
     @Binds @Singleton
-    abstract fun bindCategoryRepository(
-        impl: CategoryRepositoryImpl,
-    ): CategoryRepository
+    abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
 
-    // Los demás repositorios se añaden en los módulos siguientes
+    @Binds @Singleton
+    abstract fun bindCategoryRepository(impl: CategoryRepositoryImpl): CategoryRepository
 }
