@@ -1,6 +1,6 @@
+// domain/repository/CategoryRepository.kt
 package com.shopapp.domain.repository
 
-// domain/repository/CategoryRepository.kt
 import com.shopapp.domain.model.Category
 import com.shopapp.domain.model.CategoryPayload
 
@@ -10,4 +10,5 @@ interface CategoryRepository {
     suspend fun createCategory(payload: CategoryPayload): Result<Category>
     suspend fun updateCategory(id: Int, payload: CategoryPayload): Result<Category>
     suspend fun deleteCategory(id: Int): Result<Unit>
+    suspend fun getStats(): Result<Map<String, Any>>
 }
