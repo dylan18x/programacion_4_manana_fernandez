@@ -1,4 +1,3 @@
-
 // presentation/navigation/NavGraph.kt
 package com.shopapp.presentation.navigation
 
@@ -7,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
 import androidx.navigation.compose.*
@@ -14,6 +14,7 @@ import com.shopapp.presentation.components.LoadingScreen
 import com.shopapp.presentation.ui.admin.AdminScaffold
 import com.shopapp.presentation.ui.admin.dashboard.DashboardScreen
 import com.shopapp.presentation.ui.admin.categories.CategoriesAdminScreen
+import com.shopapp.presentation.ui.admin.products.ProductsAdminScreen
 import com.shopapp.presentation.ui.auth.LoginScreen
 import com.shopapp.presentation.ui.auth.RegisterScreen
 import com.shopapp.presentation.ui.client.orders.OrderDetailScreen
@@ -40,7 +41,7 @@ fun NavGraph(
     val cartCount         by cartViewModel.totalItems.collectAsState()
     val currentUser       by authViewModel.currentUser.collectAsState()
 
-    var showCart by remember { mutableStateOf(false) }
+    var showCart         by remember { mutableStateOf(false) }
     var confirmedOrderId by remember { mutableStateOf<Int?>(null) }
 
     if (isCheckingSession) {
@@ -77,6 +78,7 @@ fun NavGraph(
         },
     ) { innerPadding ->
 
+        // ── BottomSheet del carrito ───────────────────────────
         if (showCart) {
             CartBottomSheet(
                 cartViewModel   = cartViewModel,
@@ -99,6 +101,7 @@ fun NavGraph(
             modifier         = Modifier.padding(innerPadding),
         ) {
 
+            // ── LOGIN ───────────────────────────────────────────
             composable(Screen.Login.route) {
                 LoginScreen(
                     onLoginSuccess = { staff ->
@@ -112,6 +115,7 @@ fun NavGraph(
                 )
             }
 
+            // ── REGISTER ────────────────────────────────────────
             composable(Screen.Register.route) {
                 RegisterScreen(
                     onRegisterSuccess = { staff ->
@@ -125,6 +129,7 @@ fun NavGraph(
                 )
             }
 
+            // ── HOME ────────────────────────────────────────────
             composable(Screen.Home.route) {
                 HomeScreen(
                     onProductClick = { id -> navController.navigate("product/$id") },
@@ -132,14 +137,16 @@ fun NavGraph(
                 )
             }
 
+            // ── CATÁLOGO ────────────────────────────────────────
             composable(Screen.Catalog.route) {
                 CatalogScreen(
                     onProductClick = { id -> navController.navigate("product/$id") },
                 )
             }
 
+            // ── DETALLE PRODUCTO ────────────────────────────────
             composable(
-                route = "product/{id}",
+                route     = "product/{id}",
                 arguments = listOf(navArgument("id") { type = NavType.IntType }),
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getInt("id") ?: return@composable
@@ -150,6 +157,7 @@ fun NavGraph(
                 )
             }
 
+            // ── ORDERS ──────────────────────────────────────────
             composable(Screen.Orders.route) {
                 if (!isAuthenticated) {
                     LaunchedEffect(Unit) {
@@ -159,15 +167,14 @@ fun NavGraph(
                     }
                 } else {
                     OrdersScreen(
-                        onOrderClick = { id ->
-                            navController.navigate("orders/$id")
-                        },
+                        onOrderClick = { id -> navController.navigate("orders/$id") },
                     )
                 }
             }
 
+            // ── DETALLE PEDIDO ──────────────────────────────────
             composable(
-                route = "orders/{id}",
+                route     = "orders/{id}",
                 arguments = listOf(navArgument("id") { type = NavType.IntType }),
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getInt("id") ?: return@composable
@@ -177,6 +184,7 @@ fun NavGraph(
                 )
             }
 
+            // ── PROFILE ─────────────────────────────────────────
             composable(Screen.Profile.route) {
                 if (!isAuthenticated) {
                     LaunchedEffect(Unit) {
@@ -196,6 +204,7 @@ fun NavGraph(
                 }
             }
 
+            // ── ADMIN DASHBOARD ─────────────────────────────────
             composable(Screen.AdminDashboard.route) {
                 if (!isStaff) {
                     LaunchedEffect(Unit) {
@@ -214,10 +223,8 @@ fun NavGraph(
                             restoreState    = true
                         }
                     },
-                    onStoreClick = {
-                        navController.navigate(Screen.Home.route)
-                    },
-                    onLogout = {
+                    onStoreClick = { navController.navigate(Screen.Home.route) },
+                    onLogout     = {
                         authViewModel.logout()
                         navController.navigate(Screen.Login.route) {
                             popUpTo(0) { inclusive = true }
@@ -232,7 +239,7 @@ fun NavGraph(
                 }
             }
 
-            // 🔥 REEMPLAZADO SOLO ESTE
+            // ── ADMIN CATEGORÍAS ────────────────────────────────
             composable("admin/categories") {
                 if (!isStaff) {
                     LaunchedEffect(Unit) {
@@ -262,11 +269,40 @@ fun NavGraph(
                 }
             }
 
-            // placeholders restantes
+            // ── ADMIN PRODUCTOS ─────────────────────────────────
+            composable("admin/products") {
+                if (!isStaff) {
+                    LaunchedEffect(Unit) {
+                        navController.navigate(Screen.Home.route) { popUpTo(0) }
+                    }
+                    return@composable
+                }
+
+                AdminScaffold(
+                    currentRoute = "admin/products",
+                    user         = currentUser,
+                    title        = "Productos",
+                    onNavClick   = { route ->
+                        navController.navigate(route) { launchSingleTop = true }
+                    },
+                    onStoreClick = { navController.navigate(Screen.Home.route) },
+                    onLogout     = {
+                        authViewModel.logout()
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    },
+                ) { padding ->
+                    Box(modifier = Modifier.padding(padding)) {
+                        ProductsAdminScreen()
+                    }
+                }
+            }
+
+            // ── PLACEHOLDERS (M10+) ─────────────────────────────
             listOf(
-                "admin/products" to "Productos",
-                "admin/orders"   to "Pedidos",
-                "admin/users"    to "Usuarios",
+                "admin/orders" to "Pedidos",
+                "admin/users"  to "Usuarios",
             ).forEach { (route, title) ->
                 composable(route) {
                     if (!isStaff) {
@@ -290,7 +326,9 @@ fun NavGraph(
                         },
                     ) { padding ->
                         Box(
-                            modifier = Modifier.fillMaxSize().padding(padding),
+                            modifier         = Modifier
+                                .fillMaxSize()
+                                .padding(padding),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text("$title — próximo módulo", color = TextSecondary)
