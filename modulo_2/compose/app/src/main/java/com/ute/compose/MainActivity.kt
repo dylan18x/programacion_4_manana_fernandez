@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 //Paso02Tienda()
                 //Paso02_CardScreen()
                 //Paso03LazyColumnScreen()
-                //Paso04ScaffoldScreen()
+                //Paso04ScaffoldScr een()
                 // Paso05_NavBarScreen()
                 //Paso06_DialogosScreen()   // ← paso activo
 
