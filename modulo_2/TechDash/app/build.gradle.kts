@@ -75,4 +75,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("com.google.maps.android:maps-compose:6.2.0")
+
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
+
+
+
 }
