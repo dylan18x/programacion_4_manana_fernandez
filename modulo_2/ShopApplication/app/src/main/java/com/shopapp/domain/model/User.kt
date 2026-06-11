@@ -11,6 +11,7 @@ data class User(
     val isActive: Boolean,
     val dateJoined: String,
     val numOrders: Int,
+    val avatarUrl:  String? = null,
 )
 
 data class UserPayload(

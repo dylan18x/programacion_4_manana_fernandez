@@ -16,6 +16,8 @@ data class UserDto(
     @SerializedName("is_active")   val isActive:   Boolean,
     @SerializedName("date_joined") val dateJoined: String,
     @SerializedName("num_orders")  val numOrders:  Int,
+    @SerializedName("avatar_url")
+    val avatarUrl:  String? = null,
 )
 
 data class UserRequestDto(
@@ -52,6 +54,7 @@ fun UserDto.toDomain() = User(
     isActive   = isActive,
     dateJoined = dateJoined,
     numOrders  = numOrders,
+    avatarUrl   = avatarUrl,
 )
 
 fun UserPayload.toRequest() = UserRequestDto(
