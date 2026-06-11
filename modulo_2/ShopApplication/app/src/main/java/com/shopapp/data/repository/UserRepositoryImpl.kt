@@ -2,6 +2,7 @@
 package com.shopapp.data.repository
 
 import android.content.Context
+import android.net.Uri
 import com.shopapp.data.remote.api.UserApi
 import com.shopapp.data.remote.dto.UserRequestDto
 import com.shopapp.data.remote.dto.toDomain
