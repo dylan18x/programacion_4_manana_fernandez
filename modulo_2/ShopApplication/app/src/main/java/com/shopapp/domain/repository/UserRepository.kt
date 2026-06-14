@@ -4,6 +4,8 @@ package com.shopapp.domain.repository
 import com.shopapp.domain.model.User
 import com.shopapp.domain.model.UserPayload
 import android.net.Uri
+import com.shopapp.domain.model.NotificationResult
+
 interface UserRepository {
     suspend fun getUsers(
         search:   String?  = null,
@@ -21,4 +23,10 @@ interface UserRepository {
     suspend fun getProfile(): Result<User>
 
     suspend fun uploadAvatar(uri: Uri): Result<String>
+
+    suspend fun sendNotification(
+        subject: String,
+        message: String,
+        userId:  Int? = null,
+    ): Result<NotificationResult>
 }
