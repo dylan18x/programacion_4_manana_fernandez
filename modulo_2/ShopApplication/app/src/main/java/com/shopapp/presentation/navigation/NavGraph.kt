@@ -18,6 +18,7 @@ import com.shopapp.presentation.ui.admin.orders.OrderAdminDetailScreen
 import com.shopapp.presentation.ui.admin.orders.OrdersAdminScreen
 import com.shopapp.presentation.ui.admin.products.ProductsAdminScreen
 import com.shopapp.presentation.ui.admin.users.UsersAdminScreen
+import com.shopapp.presentation.ui.auth.ForgotPasswordScreen
 import com.shopapp.presentation.ui.auth.LoginScreen
 import com.shopapp.presentation.ui.auth.RegisterScreen
 import com.shopapp.presentation.ui.client.orders.OrderDetailScreen
@@ -116,6 +117,7 @@ fun NavGraph(
                     },
                     onNavigateToRegister = { navController.navigate(Screen.Register.route) },
                     viewModel            = authViewModel,
+                    onForgotPassword     = { navController.navigate(Screen.ForgotPassword.route) },
                 )
             }
 
@@ -416,6 +418,25 @@ fun NavGraph(
                     }
                 }
             }
+
+            composable(Screen.ForgotPassword.route) {
+                ForgotPasswordScreen(
+                    onBack        = { navController.popBackStack() },
+                    onGoToConfirm = { navController.navigate(Screen.ResetPasswordConfirm.route) },
+                )
+            }
+
+            composable(Screen.ResetPasswordConfirm.route) {
+                ResetPasswordConfirmScreen(
+                    onBack         = { navController.popBackStack() },
+                    onResetSuccess = {
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
+                        }
+                    },
+                )
+            }
+
 
 
         }
