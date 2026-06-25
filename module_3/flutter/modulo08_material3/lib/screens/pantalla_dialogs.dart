@@ -86,6 +86,7 @@ class PantallaDialogs extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
     final ctrlNombre = TextEditingController();
     final ctrlApellido     = TextEditingController();
+    final ctrlEmail     = TextEditingController();
 
     await showDialog<void>(
       context: context,
@@ -108,6 +109,11 @@ class PantallaDialogs extends StatelessWidget {
                 validator:   (v) => v == null || v.isEmpty ? 'Campo requerido' : null,
               ),
               const SizedBox(height: 8),
+              TextFormField(
+                controller: ctrlEmail,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator:   (v) => v == null || v.isEmpty ? 'Campo requerido' : null,
+              ),
             ],
           ),
         ),
