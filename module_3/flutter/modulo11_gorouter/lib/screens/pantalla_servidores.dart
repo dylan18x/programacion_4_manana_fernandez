@@ -17,32 +17,20 @@ class PantallaServidores extends StatelessWidget {
         backgroundColor: cs.primaryContainer,
         foregroundColor: cs.onPrimaryContainer,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: 
-            ListView.builder(
-              itemCount: servidores.length,
-              itemBuilder: (context, i) => ListTile(
-                leading: const Icon(Icons.dns),
-                title: Text(servidores[i].nombre),
-                onTap: () {
-                  // context.push() — apila la pantalla (aparece botón "atrás")
-                  context.push('/servidores/${servidores[i].id}',extra: servidores[i]);
-                  
-                },
-              ),
-            ),
-            
-          ),
-          FilledButton.icon(
-              onPressed: () => context.go('/'),
-              icon:  const Icon(Icons.dns),
-              label: const Text('Regresar'),
-            ),
-        ],
+      body: ListView.builder(
+        itemCount: servidores.length,
+        itemBuilder: (context, i) => ListTile(
+          leading: const Icon(Icons.dns),
+          title: Text(servidores[i].nombre),
+          onTap: () {
+            // context.push() — apila la pantalla (aparece botón "atrás")
+            context.push(
+              '/servidores/${servidores[i].id}',
+              extra: servidores[i],
+            );
+          },
+        ),
       ),
-      
     );
   }
 }
