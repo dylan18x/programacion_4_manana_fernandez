@@ -12,7 +12,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authProvider).user;
-    final tt   = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return Scaffold(
       body: SafeArea(
@@ -24,12 +24,13 @@ class ProfileScreen extends ConsumerWidget {
 
               // Avatar
               Container(
-                width:  80, height: 80,
+                width: 80,
+                height: 80,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [AppColors.accent, AppColors.accentLight],
-                    begin:  Alignment.topLeft,
-                    end:    Alignment.bottomRight,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                   shape: BoxShape.circle,
                 ),
@@ -39,8 +40,8 @@ class ProfileScreen extends ConsumerWidget {
                         ? user!.username[0].toUpperCase()
                         : '?',
                     style: const TextStyle(
-                      color:      AppColors.onAccent,
-                      fontSize:   34,
+                      color: AppColors.onAccent,
+                      fontSize: 34,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -48,21 +49,22 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               Text(user?.username ?? '—', style: tt.headlineMedium),
-              Text(user?.email    ?? '—', style: tt.bodyMedium),
+              Text(user?.email ?? '—', style: tt.bodyMedium),
               const SizedBox(height: 8),
               if (user?.isStaff == true)
                 Container(
-                  padding:    const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
                   decoration: BoxDecoration(
-                    color:        AppColors.accent.withValues(alpha: 0.15),
+                    color: AppColors.accent.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: const Text(
                     'Staff',
                     style: TextStyle(
-                      color:         AppColors.accent,
-                      fontSize:      12,
-                      fontWeight:    FontWeight.bold,
+                      color: AppColors.accent,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                       letterSpacing: 0.8,
                     ),
                   ),
@@ -71,10 +73,10 @@ class ProfileScreen extends ConsumerWidget {
 
               // Info
               Container(
-                width:   double.infinity,
+                width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color:        AppColors.surface,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -83,18 +85,21 @@ class ProfileScreen extends ConsumerWidget {
                     const Text(
                       'INFORMACIÓN DE LA CUENTA',
                       style: TextStyle(
-                        color:         AppColors.textSecondary,
-                        fontSize:      11,
-                        fontWeight:    FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
                         letterSpacing: 0.8,
                       ),
                     ),
                     const SizedBox(height: 16),
                     ...[
                       ('ID de usuario', user?.id.toString() ?? '—'),
-                      ('Usuario',       user?.username      ?? '—'),
-                      ('Email',         user?.email         ?? '—'),
-                      ('Rol',           user?.isStaff == true ? 'Administrador' : 'Cliente'),
+                      ('Usuario', user?.username ?? '—'),
+                      ('Email', user?.email ?? '—'),
+                      (
+                        'Rol',
+                        user?.isStaff == true ? 'Administrador' : 'Cliente'
+                      ),
                     ].asMap().entries.map((entry) {
                       final isLast = entry.key == 3;
                       return Column(
@@ -105,11 +110,13 @@ class ProfileScreen extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(entry.value.$1,
-                                    style: const TextStyle(color: AppColors.textSecondary)),
+                                    style: const TextStyle(
+                                        color: AppColors.textSecondary)),
                                 Text(
                                   entry.value.$2,
                                   style: const TextStyle(
-                                    color: AppColors.textPrimary, fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ],
@@ -123,6 +130,28 @@ class ProfileScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 24),
+              const SizedBox(height: 24),
+
+              // Botón Admin — solo visible para staff
+              if (user?.isStaff == true) ...[
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton.icon(
+                    onPressed: () => context.go('/admin'),
+                    icon: const Icon(Icons.admin_panel_settings_outlined),
+                    label: const Text('Panel Admin'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
+
+              // Botón logout (sin cambios)
+              _LogoutButton(
+                onConfirm: () async {
+                  await ref.read(authProvider.notifier).logout();
+                },
+              ),
 
               // Botón logout
               _LogoutButton(
@@ -146,45 +175,46 @@ class _LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    width:  double.infinity,
-    height: 52,
-    child:  OutlinedButton.icon(
-      onPressed: () => showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          backgroundColor: AppColors.surface,
-          shape:           RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title:           const Text('¿Cerrar sesión?',
-              style: TextStyle(color: AppColors.textPrimary)),
-          content:         const Text(
-            'Tu sesión se cerrará en este dispositivo.',
-            style: TextStyle(color: AppColors.textSecondary),
-          ),
-          actions: [
-            TextButton(
- 
-              onPressed: () => Navigator.pop(context),
-              child:     const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                await onConfirm();
-              },
-              child: const Text(
-                'Cerrar sesión',
-                style: TextStyle(color: AppColors.error, fontWeight: FontWeight.bold),
+        width: double.infinity,
+        height: 52,
+        child: OutlinedButton.icon(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              backgroundColor: AppColors.surface,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              title: const Text('¿Cerrar sesión?',
+                  style: TextStyle(color: AppColors.textPrimary)),
+              content: const Text(
+                'Tu sesión se cerrará en este dispositivo.',
+                style: TextStyle(color: AppColors.textSecondary),
               ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await onConfirm();
+                  },
+                  child: const Text(
+                    'Cerrar sesión',
+                    style: TextStyle(
+                        color: AppColors.error, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
+          icon: const Icon(Icons.logout, color: AppColors.error),
+          label: const Text('Cerrar sesión'),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.error,
+            side: BorderSide(color: AppColors.error.withValues(alpha: 0.5)),
+          ),
         ),
-      ),
-      icon:  const Icon(Icons.logout, color: AppColors.error),
-      label: const Text('Cerrar sesión'),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.error,
-        side:            BorderSide(color: AppColors.error.withValues(alpha: 0.5)),
-      ),
-    ),
-  );
+      );
 }
