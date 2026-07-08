@@ -14,10 +14,10 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user         = ref.watch(authProvider).user;
+    final user = ref.watch(authProvider).user;
     final profileAsync = ref.watch(profileProvider);
-    final uploadState  = ref.watch(imageUploadProvider);
-    final tt           = Theme.of(context).textTheme;
+    final uploadState = ref.watch(imageUploadProvider);
+    final tt = Theme.of(context).textTheme;
 
     ref.listen<ImageUploadState>(imageUploadProvider, (_, next) {
       if (next is ImageUploadSuccess) {
@@ -29,7 +29,7 @@ class ProfileScreen extends ConsumerWidget {
       } else if (next is ImageUploadError) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content:         Text(next.message),
+            content: Text(next.message),
             backgroundColor: AppColors.error,
           ),
         );
@@ -51,8 +51,8 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   UserAvatar(
                     avatarUrl: profileAsync.valueOrNull?.avatarUrl,
-                    username:  user?.username,
-                    radius:    40,
+                    username: user?.username,
+                    radius: 40,
                     onTap: uploadState is ImageUploadLoading
                         ? null
                         : () => ref
@@ -65,33 +65,38 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               Text(user?.username ?? '—', style: tt.headlineMedium),
-              Text(user?.email    ?? '—', style: tt.bodyMedium),
+              Text(user?.email ?? '—', style: tt.bodyMedium),
               const SizedBox(height: 8),
-              if (user?.isStaff == true)
-                Container(
-                  padding:    const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-                  decoration: BoxDecoration(
-                    color:        AppColors.accent.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  child: const Text(
-                    'Staff',
-                    style: TextStyle(
-                      color:         AppColors.accent,
-                      fontSize:      12,
-                      fontWeight:    FontWeight.bold,
-                      letterSpacing: 0.8,
-                    ),
+              if (user?.isStaff == true) ...[
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton.icon(
+                    onPressed: () => context.go('/admin'),
+                    icon: const Icon(Icons.admin_panel_settings_outlined),
+                    label: const Text('Panel Admin'),
                   ),
                 ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton.icon(
+                    onPressed: () => context.push('/send-notification'),
+                    icon: const Icon(Icons.send_outlined),
+                    label: const Text('Enviar notificación'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
               const SizedBox(height: 32),
 
               // Información de la cuenta
               Container(
-                width:   double.infinity,
+                width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color:        AppColors.surface,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -100,18 +105,21 @@ class ProfileScreen extends ConsumerWidget {
                     const Text(
                       'INFORMACIÓN DE LA CUENTA',
                       style: TextStyle(
-                        color:         AppColors.textSecondary,
-                        fontSize:      11,
-                        fontWeight:    FontWeight.bold,
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
                         letterSpacing: 0.8,
                       ),
                     ),
                     const SizedBox(height: 16),
                     ...[
                       ('ID de usuario', user?.id.toString() ?? '—'),
-                      ('Usuario',       user?.username      ?? '—'),
-                      ('Email',         user?.email         ?? '—'),
-                      ('Rol',           user?.isStaff == true ? 'Administrador' : 'Cliente'),
+                      ('Usuario', user?.username ?? '—'),
+                      ('Email', user?.email ?? '—'),
+                      (
+                        'Rol',
+                        user?.isStaff == true ? 'Administrador' : 'Cliente'
+                      ),
                     ].asMap().entries.map((entry) {
                       final isLast = entry.key == 3;
                       return Column(
@@ -122,11 +130,13 @@ class ProfileScreen extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(entry.value.$1,
-                                    style: const TextStyle(color: AppColors.textSecondary)),
+                                    style: const TextStyle(
+                                        color: AppColors.textSecondary)),
                                 Text(
                                   entry.value.$2,
                                   style: const TextStyle(
-                                    color: AppColors.textPrimary, fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ],
@@ -144,11 +154,11 @@ class ProfileScreen extends ConsumerWidget {
               // Botón Admin — solo visible para staff
               if (user?.isStaff == true) ...[
                 SizedBox(
-                  width:  double.infinity,
+                  width: double.infinity,
                   height: 52,
-                  child:  ElevatedButton.icon(
+                  child: ElevatedButton.icon(
                     onPressed: () => context.go('/admin'),
-                    icon:  const Icon(Icons.admin_panel_settings_outlined),
+                    icon: const Icon(Icons.admin_panel_settings_outlined),
                     label: const Text('Panel Admin'),
                   ),
                 ),
@@ -176,45 +186,47 @@ class _LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    width:  double.infinity,
-    height: 52,
-    child:  OutlinedButton.icon(
-      onPressed: () => showDialog(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
-          backgroundColor: AppColors.surface,
-          shape:           RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title:           const Text('¿Cerrar sesión?',
-              style: TextStyle(color: AppColors.textPrimary)),
-          content:         const Text(
-            'Tu sesión se cerrará en este dispositivo.',
-            style: TextStyle(color: AppColors.textSecondary),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child:     const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(dialogContext).pop();
-                await Future.delayed(const Duration(milliseconds: 100));
-                await onConfirm();
-              },
-              child: const Text(
-                'Cerrar sesión',
-                style: TextStyle(color: AppColors.error, fontWeight: FontWeight.bold),
+        width: double.infinity,
+        height: 52,
+        child: OutlinedButton.icon(
+          onPressed: () => showDialog(
+            context: context,
+            builder: (dialogContext) => AlertDialog(
+              backgroundColor: AppColors.surface,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              title: const Text('¿Cerrar sesión?',
+                  style: TextStyle(color: AppColors.textPrimary)),
+              content: const Text(
+                'Tu sesión se cerrará en este dispositivo.',
+                style: TextStyle(color: AppColors.textSecondary),
               ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext),
+                  child: const Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.of(dialogContext).pop();
+                    await Future.delayed(const Duration(milliseconds: 100));
+                    await onConfirm();
+                  },
+                  child: const Text(
+                    'Cerrar sesión',
+                    style: TextStyle(
+                        color: AppColors.error, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
+          icon: const Icon(Icons.logout, color: AppColors.error),
+          label: const Text('Cerrar sesión'),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.error,
+            side: BorderSide(color: AppColors.error.withValues(alpha: 0.5)),
+          ),
         ),
-      ),
-      icon:  const Icon(Icons.logout, color: AppColors.error),
-      label: const Text('Cerrar sesión'),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.error,
-        side:            BorderSide(color: AppColors.error.withValues(alpha: 0.5)),
-      ),
-    ),
-  );
+      );
 }

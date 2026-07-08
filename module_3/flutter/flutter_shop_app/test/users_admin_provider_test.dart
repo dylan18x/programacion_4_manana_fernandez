@@ -45,6 +45,15 @@ class FakeUserRemoteDatasource implements UserRemoteDatasource {
   Future<bool> toggleActive(int id) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Map<String, dynamic>> sendNotification({
+    required String subject,
+    required String message,
+    int? userId,
+  }) {
+    throw UnimplementedError();
+  }
 }
 
 User _user(int id) => User(
