@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_shop_app/presentation/screens/admin/categoriesadminscreen.dart';
 import 'package:flutter_shop_app/presentation/screens/admin/dashboard_screen.dart';
 import 'package:flutter_shop_app/presentation/screens/auth/profile_screen.dart';
 import 'package:flutter_shop_app/presentation/screens/cart/cart_screen.dart';
@@ -17,7 +18,6 @@ import '../screens/auth/register_screen.dart';
 import '../screens/catalog/catalog_screen.dart';
 import '../screens/catalog/home_screen.dart';
 import 'public_shell.dart';
-
 
 class _PlaceholderScreen extends ConsumerWidget {
   final String title;
@@ -133,7 +133,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => AdminShell(
           title: 'Categorías',
           currentRoute: state.matchedLocation,
-          child: const _AdminPlaceholder('Categorías — M8'),
+          child: const CategoriesAdminScreen(),
         ),
       ),
       GoRoute(
