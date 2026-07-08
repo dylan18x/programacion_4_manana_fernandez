@@ -7,26 +7,28 @@ import 'dio_client.dart';
 import '../../../domain/model/user.dart';
 
 class PaginatedUsers {
-  final int        count;
-  final String?    next;
+  final int count;
+  final String? next;
   final List<User> results;
-  const PaginatedUsers({required this.count, required this.next, required this.results});
+  const PaginatedUsers(
+      {required this.count, required this.next, required this.results});
 
   factory PaginatedUsers.fromJson(Map<String, dynamic> j) => PaginatedUsers(
-    count:   j['count']   as int,
-    next:    j['next']    as String?,
-    results: (j['results'] as List)
-        .map((e) => User.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
+        count: j['count'] as int,
+        next: j['next'] as String?,
+        results: (j['results'] as List)
+            .map((e) => User.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
 }
 
 abstract class UserRemoteDatasource {
-  Future<PaginatedUsers>       getUsers({String? search, bool? isStaff, bool? isActive});
-  Future<User>                 createUser(Map<String, dynamic> payload);
-  Future<User>                 updateUser(int id, Map<String, dynamic> payload);
-  Future<void>                 deleteUser(int id);
-  Future<bool>                 toggleActive(int id);
+  Future<PaginatedUsers> getUsers(
+      {String? search, bool? isStaff, bool? isActive, int page = 1});
+  Future<User> createUser(Map<String, dynamic> payload);
+  Future<User> updateUser(int id, Map<String, dynamic> payload);
+  Future<void> deleteUser(int id);
+  Future<bool> toggleActive(int id);
   Future<Map<String, dynamic>> getStats();
 }
 
@@ -35,11 +37,13 @@ class UserRemoteDatasourceImpl implements UserRemoteDatasource {
   UserRemoteDatasourceImpl(this._dio);
 
   @override
-  Future<PaginatedUsers> getUsers({String? search, bool? isStaff, bool? isActive}) async {
+  Future<PaginatedUsers> getUsers(
+      {String? search, bool? isStaff, bool? isActive, int page = 1}) async {
     try {
       final params = <String, dynamic>{
-        if (search   != null) 'search':    search,
-        if (isStaff  != null) 'is_staff':  isStaff,
+        'page': page,
+        if (search != null) 'search': search,
+        if (isStaff != null) 'is_staff': isStaff,
         if (isActive != null) 'is_active': isActive,
       };
       final res = await _dio.get('/users/', queryParameters: params);
