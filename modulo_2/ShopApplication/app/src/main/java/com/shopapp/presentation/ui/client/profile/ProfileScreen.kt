@@ -64,6 +64,13 @@ fun ProfileScreen(
             else -> {
                 val profile = state.profile
 
+                // DEBUG: quitar esta línea después de probar
+                Text(
+                    text = "DEBUG isStaff=${profile?.isStaff} | username=${profile?.username}",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier            = Modifier
@@ -74,7 +81,6 @@ fun ProfileScreen(
                 ) {
                     Spacer(Modifier.height(24.dp))
 
-                    // ── Avatar ───────────────────────────────────────────────
                     AvatarSection(
                         avatarUrl       = state.avatarUrl,
                         username        = profile?.username ?: "",
@@ -103,24 +109,10 @@ fun ProfileScreen(
 
                     Spacer(Modifier.height(24.dp))
                     HorizontalDivider()
-                    Spacer(Modifier.height(16.dp))
 
-                    OutlinedButton(
-                        onClick  = onEditProfile,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Icon(Icons.Default.Edit, null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text("Editar perfil")
-                    }
-
-                    Spacer(Modifier.height(8.dp))
-
-                    val profile = state.profile
-
+                    // ── SECCIÓN DE NOTIFICACIONES (Visible solo si profile?.isStaff es true) ──
                     if (profile?.isStaff == true) {
-                        HorizontalDivider()
-
+                        Spacer(Modifier.height(8.dp))
                         ListItem(
                             headlineContent   = {
                                 Text("Enviar notificación", fontWeight = FontWeight.Medium)
@@ -143,9 +135,22 @@ fun ProfileScreen(
                             },
                             modifier = Modifier.clickable(onClick = onSendNotification),
                         )
-
                         HorizontalDivider()
+                        Spacer(Modifier.height(16.dp))
+                    } else {
+                        Spacer(Modifier.height(16.dp))
                     }
+
+                    OutlinedButton(
+                        onClick  = onEditProfile,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Icon(Icons.Default.Edit, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("Editar perfil")
+                    }
+
+                    Spacer(Modifier.height(8.dp))
 
                     OutlinedButton(
                         onClick  = onLogout,
