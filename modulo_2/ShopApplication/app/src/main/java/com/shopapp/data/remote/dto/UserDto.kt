@@ -16,6 +16,8 @@ data class UserDto(
     @SerializedName("is_active")   val isActive:   Boolean,
     @SerializedName("date_joined") val dateJoined: String,
     @SerializedName("num_orders")  val numOrders:  Int,
+    @SerializedName("avatar_url")
+    val avatarUrl:  String? = null,
 )
 
 data class UserRequestDto(
@@ -40,6 +42,20 @@ data class UserStatsDto(
     val staff:    Int,
 )
 
+data class SendNotificationDto(
+    @SerializedName("subject") val subject: String,
+    @SerializedName("message") val message: String,
+    @SerializedName("user_id") val userId:  Int? = null,  // null → envío masivo
+)
+
+/**
+ * Respuesta { "detail": "Correo enviado a N usuario(s).", "sent": N, "failed": M }
+ */
+data class NotificationResultDto(
+    @SerializedName("detail") val detail: String,
+    @SerializedName("sent")   val sent:   Int,
+    @SerializedName("failed") val failed: Int,
+)
 // ── Mappers ───────────────────────────────────────────────────
 
 fun UserDto.toDomain() = User(
@@ -52,6 +68,7 @@ fun UserDto.toDomain() = User(
     isActive   = isActive,
     dateJoined = dateJoined,
     numOrders  = numOrders,
+    avatarUrl   = avatarUrl,
 )
 
 fun UserPayload.toRequest() = UserRequestDto(
@@ -63,3 +80,4 @@ fun UserPayload.toRequest() = UserRequestDto(
     isActive  = isActive,
     password  = password,
 )
+
